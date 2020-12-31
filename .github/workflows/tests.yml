@@ -83,7 +83,9 @@ jobs:
           sudo install prelude/prelude /usr/local/bin
 
       - name: Check dependencies
-        run: st_check_dependencies
+        run: |
+          pwd
+          st_check_dependencies
 
       - name: Run unit tests
         run: py.test . -v --cov shimmingtoolbox/ --cov-report term-missing
