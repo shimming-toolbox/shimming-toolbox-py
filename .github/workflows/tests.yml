@@ -59,7 +59,7 @@ jobs:
       - name: SpinalCord Toolbox installation
         run: |
           cd ../..
-          git clone --depth 1 https://github.com/neuropoly/spinalcordtoolbox
+          git clone --depth 1 -b 5.0.1 https://github.com/neuropoly/spinalcordtoolbox
           cd spinalcordtoolbox
           ./install_sct -y
           cd ..
