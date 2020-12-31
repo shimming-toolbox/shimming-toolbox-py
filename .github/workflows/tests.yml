@@ -58,16 +58,17 @@ jobs:
 
       - name: SpinalCord Toolbox installation
         run: |
+          pwd
           cd ../..
           git clone --depth 1 -b 5.0.1 https://github.com/neuropoly/spinalcordtoolbox
           cd spinalcordtoolbox
           ./install_sct -y
-          cd ..
-          cd shimming-toolbox
+          pwd
 
       - name: prelude macOS
         if: contains(matrix.os, 'macos')
         run: |
+          pwd
           echo "Download prelude for macOS"
           mkdir prelude
           curl -o prelude/prelude -JL https://github.com/shimming-toolbox/binaries/raw/master/prelude_macos
