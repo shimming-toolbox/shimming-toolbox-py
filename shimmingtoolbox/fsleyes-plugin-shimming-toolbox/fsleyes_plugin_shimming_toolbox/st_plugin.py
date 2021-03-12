@@ -33,6 +33,8 @@ import subprocess
 __dir_shimmingtoolbox__ = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 logger = logging.getLogger(__name__)
 
+DIR = os.path.dirname(__file__)
+
 VERSION = "0.1.1"
 
 
@@ -293,8 +295,9 @@ class InfoComponent(Component):
         Retunrs:
             wx.StaticBitmap: The ShimmingToolbox logo
         """
-        fname_st_logo = os.path.join(__dir_shimmingtoolbox__, 'docs', 'source', '_static',
-                                     'shimming_toolbox_logo.png')
+        # fname_st_logo = os.path.join(__dir_shimmingtoolbox__, 'docs', 'source', '_static',
+        #                              'shimming_toolbox_logo.png')
+        fname_st_logo = os.path.join(DIR, 'img', 'shimming_toolbox_logo.png')
 
         png = wx.Image(fname_st_logo, wx.BITMAP_TYPE_ANY).ConvertToBitmap()
         png.SetSize((png.GetWidth()*scale, png.GetHeight()*scale))
@@ -1168,7 +1171,7 @@ class TextWithButton:
 
 def create_asterisk_icon(panel):
     bmp = wx.ArtProvider.GetBitmap(wx.ART_INFORMATION)
-    info_icon = os.path.join(__dir_shimmingtoolbox__, 'shimmingtoolbox', 'gui', 'asterisk.png')
+    info_icon = os.path.join(DIR, 'img', 'asterisk.png')
     img = wx.Image(info_icon, wx.BITMAP_TYPE_ANY)
     bmp = img.ConvertToBitmap()
     image = wx.StaticBitmap(panel, bitmap=bmp)
@@ -1177,7 +1180,7 @@ def create_asterisk_icon(panel):
 
 def create_info_icon(panel, info_text=""):
     bmp = wx.ArtProvider.GetBitmap(wx.ART_INFORMATION)
-    info_icon = os.path.join(__dir_shimmingtoolbox__, 'shimmingtoolbox', 'gui', 'info-icon.png')
+    info_icon = os.path.join(DIR, 'img', 'info-icon.png')
     img = wx.Image(info_icon, wx.BITMAP_TYPE_ANY)
     bmp = img.ConvertToBitmap()
     image = InfoIcon(panel, bitmap=bmp, info_text=info_text)
