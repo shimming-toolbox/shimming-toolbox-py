@@ -4,12 +4,12 @@
 import click
 import os
 import math
-import numpy as np
 import nibabel as nib
 import json
 
 from shimmingtoolbox.load_nifti import read_nii
 from shimmingtoolbox.prepare_fieldmap import prepare_fieldmap
+from shimmingtoolbox.utils import create_output_dir
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
@@ -27,11 +27,14 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 @click.option('-gaussian-filter', 'gaussian_filter', type=bool, help="Gaussian filter for B0 map")
 @click.option('-sigma', type=float, default=1, help="Standard deviation of gaussian filter. Used for: gaussian_filter")
 def prepare_fieldmap_cli(phase, fname_mag, unwrapper, fname_output, fname_mask, threshold, gaussian_filter, sigma):
-    """Creates fieldmap (in Hz) from phase images. This function accommodates multiple echoes (2 or more) and phase
-    difference. This function also accommodates 4D phase inputs, where the 4th dimension represents the time, in case
-    multiple field maps are acquired across time for the purpose of real-time shimming experiments.
+    """Creates fieldmap (in Hz) from phase images.
 
-    phase: Input path of phase nifti file(s), in ascending order: echo1, echo2, etc.
+    This function accommodates multiple echoes (2 or more) and phase difference. This function also
+    accommodates 4D phase inputs, where the 4th dimension represents the time, in case multiple
+    field maps are acquired across time for the purpose of real-time shimming experiments.
+
+    PHASE: Input path of phase nifti file(s), in ascending order: echo1, echo2, etc.
+
     """
 
     # Import phase
@@ -70,11 +73,13 @@ def prepare_fieldmap_cli(phase, fname_mag, unwrapper, fname_output, fname_mask, 
     else:
         mask = None
 
-    fieldmap_hz = prepare_fieldmap(list_phase, echo_times, affine, mag=mag, unwrapper=unwrapper, mask=mask,
-                                   threshold=threshold, gaussian_filter=gaussian_filter, sigma=sigma)
+    fieldmap_hz = prepare_fieldmap(list_phase, echo_times, affine, mag=mag, unwrapper=unwrapper,
+                                   mask=mask, threshold=threshold, gaussian_filter=gaussian_filter,
+                                   sigma=sigma)
 
     # Save NIFTI
     nii_fieldmap = nib.Nifti1Image(fieldmap_hz, affine)
+    create_output_dir(fname_output, is_file=True)
     nib.save(nii_fieldmap, fname_output)
 
     # Save json
